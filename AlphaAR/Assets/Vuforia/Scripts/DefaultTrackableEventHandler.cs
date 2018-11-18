@@ -114,13 +114,14 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
                     }
                     
                 }
-                mapped.Clear();
+
             }
             else
             {
                 Debug.Log("invalid!");
             }
-
+            mapped.Clear();
+            curMsg = setMsgEmpty();
         }
 
         if (GUI.Button(new Rect(10, 110, 300, 80), soundStr))
