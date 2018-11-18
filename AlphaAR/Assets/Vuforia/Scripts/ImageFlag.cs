@@ -26,8 +26,8 @@ public class ImageFlag : MonoBehaviour
         return this.flag;
     }
 
-    public float getYPosition(){
-        return this.transform.position.y;
+    public float getX(){
+        return this.transform.position.x;
     }
 
     public void setChildFalse(){
