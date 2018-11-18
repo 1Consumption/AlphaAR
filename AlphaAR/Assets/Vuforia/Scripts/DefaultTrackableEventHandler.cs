@@ -9,6 +9,7 @@ Confidential and Proprietary - Protected under copyright and other laws.
 using UnityEngine;
 using Vuforia;
 using System;
+using System.Collections;
 
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
@@ -23,11 +24,15 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     protected TrackableBehaviour mTrackableBehaviour;
     protected TrackableBehaviour.Status m_PreviousStatus;
     protected TrackableBehaviour.Status m_NewStatus;
-    GameObject cat;
-    GameObject[] target;
+    GameObject target;
+    GameObject sound;
     GameObject[] animals;
-    bool flag = false;
-    int index = 0;
+    GameObject animalObject = null;
+    GameObject childObj = null;
+    String curMsg = null;
+    SortedList mapped = new SortedList();
+
+    int animalIdx = 0;
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
@@ -35,10 +40,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void Start()
     {
-        target = GameObject.FindGameObjectsWithTag("Alphabet");
-        //Debug.Log(Math.Ceiling((float)target.Length / (float)2));
-        cat = GameObject.Find("CAT");
+        target = GameObject.FindGameObjectWithTag("Alphabet");
         animals = GameObject.FindGameObjectsWithTag("Animal");
+        sound = GameObject.FindGameObjectWithTag("Sound");
 
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
@@ -56,58 +60,112 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     void OnGUI()
     {
         //GUI버튼 생성 클릭 하면 참
-        if (GUI.Button(new Rect(10, 10, 300, 80), "swap"))
+        String swapStr = "<size=22>SWAP</size>";
+        String soundStr = "<size=22>SOUND</size>";
+        if (GUI.Button(new Rect(10, 10, 300, 80), swapStr))
         {
-            bool state = true;
-            for (int i = 0; i < target.Length;i++){
-                if(target[i].GetComponent<ImageFlag>().getFlag()==false){
-                    state = false;
+            for (int i = 0; i < target.transform.childCount; i++)
+            {
+                childObj = target.transform.GetChild(i).gameObject;
+                if (childObj.GetComponent<ImageFlag>().getFlag() == true)
+                {
+                    mapped.Add(childObj.transform.position.x, childObj.name);
+                }
+            }
+            curMsg = getMsg(mapped);
+            bool state = false;
+
+            for (int i = 0; i < animals.Length; i++)
+            {
+                if (curMsg.Equals(animals[i].name))
+                {
+                    animalObject = animals[i];
+                    state = true;
+                    break;
                 }
             }
 
             if (state)
             {
-                //for (int i = 0; i < target.Length-1; i++)
-                //{
-                //    if (target[i].transform.position.y>target[i+1].transform.position.y)
-                //    {
-                //        state = false;
-                //    }
-                //}
-                if (state)
+                String middleChar = "";
+                for (int i = 0; i < curMsg.Length; i++)
                 {
-                    for (int i = 0; i < target.Length;i++){
-
-                        target[i].GetComponent<ImageFlag>().setChildFalse();
-                    }
-
-                    if (flag == false)
+                    if (i == curMsg.Length / 2)
                     {
-                        cat.transform.parent = target[target.Length/2].transform;
-                        // Adjust the position and scale
-                        // so that it fits nicely on the target
-                        cat.transform.localPosition = new Vector3(0, 0.2f, 0);
-                        cat.transform.localRotation = Quaternion.identity;
-                        cat.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-                        flag = true;
+                        middleChar = curMsg.Substring(i, i);
+                        break;
                     }
-                    cat.SetActive(true);
+                }
+                Debug.Log("middleChar is " + middleChar);
 
-                } else{
-                    Debug.Log("invalid!");
+                for (int i = 0; i < target.transform.childCount; i++)
+                {
+                    childObj = target.transform.GetChild(i).gameObject;
+                    if (childObj.GetComponent<ImageFlag>().getFlag() == true)
+                    {
+                        childObj.GetComponent<ImageFlag>().setChildFalse();
+                    }
+                }
+
+                for (int i = 0; i < target.transform.childCount; i++)
+                {
+                    childObj = target.transform.GetChild(i).gameObject;
+                    if (childObj.name.Substring(11).Equals(middleChar))
+                    {
+                        Debug.Log("childobj name is " + childObj.name);
+                        animalObject.transform.parent = childObj.transform;
+                        animalObject.transform.localPosition = new Vector3(0, 0, 0);
+                        animalObject.transform.localRotation = Quaternion.identity;
+                        animalObject.SetActive(true);
+                        break;
+                    }
+                }
+
+                mapped.Clear();
+            }
+            else
+            {
+                Debug.Log("Invalid!");
+            }
+
+        }
+
+        if (GUI.Button(new Rect(10, 100, 300, 80), soundStr))
+        {
+            if(animalIdx==animals.Length){
+                animalIdx = 0;
+            }
+
+
+            for (int i = 0; i < sound.transform.childCount;i++){
+                childObj = sound.transform.GetChild(i).gameObject;
+                if(childObj.name.Equals(animals[animalIdx].name)){
+                    childObj.GetComponent<AudioSource>().Play();
+                    break;
                 }
             }
+
+            animalIdx++;
+
         }
 
-        if (GUI.Button(new Rect(10, 100, 300, 80), "recovery"))
-        {
-            for (int i = 0; i < target.Length;i++){
-                target[i].GetComponent<ImageFlag>().setChildTrue();
-            }
-            cat.SetActive(false);
-        }
     }
 
+
+    public String getMsg(SortedList list)
+    {
+        String temp = "";
+        for (int i = 0; i < list.Count;i++){
+            temp += list.GetByIndex(i).ToString().Substring(11);
+        }
+        Debug.Log("getMsg() : " + temp);
+        return temp;
+    }
+
+    public String setMsgEmpty(){
+        Debug.Log("message will be empty!");
+        return "";
+    }
 
     //private void Update()
     //{
@@ -144,10 +202,18 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             mTrackableBehaviour.GetComponent<ImageFlag>().setFlag(false);
             Debug.Log(mTrackableBehaviour.TrackableName+" is "+ GameObject.Find("ImageTarget" + mTrackableBehaviour.TrackableName).GetComponent<ImageFlag>().getFlag());
 
-            for (int i = 0; i < target.Length;i++){
-                target[i].GetComponent<ImageFlag>().setChildTrue();
+            curMsg = setMsgEmpty();
+
+            for (int i = 0; i < target.transform.childCount; i++)
+            {
+                childObj = target.transform.GetChild(i).gameObject;
+                childObj.GetComponent<ImageFlag>().setChildTrue();
             }
-            cat.SetActive(false);
+
+            for (int i = 0; i < animals.Length;i++){
+                animals[i].SetActive(false);
+            }
+
             OnTrackingLost();
         }
         else
@@ -206,3 +272,5 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
 
 }
+
+

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Alphabet
   - Animal
+  - Sound
   layers:
   - Default
   - TransparentFX

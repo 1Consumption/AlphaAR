@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{EB43D28B-5E34-EF5D-7AB3-DC7EFDF8C218}</ProjectGuid>
+    <ProjectGuid>{46D99315-6A77-AF91-BE43-4D223709E0AB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>VuforiaEditorScripts</AssemblyName>
@@ -353,7 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="VuforiaScripts.csproj">
-      <Project>{74A255EB-DB11-1DF8-9111-9958891CD468}</Project>
+      <Project>{5972E1F6-EF24-75A6-3E56-DA03B7A42E12}</Project>
       <Name>VuforiaScripts</Name>
     </ProjectReference>
   </ItemGroup>
