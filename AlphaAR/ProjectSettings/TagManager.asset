@@ -7,6 +7,8 @@ TagManager:
   - Alphabet
   - Animal
   - Sound
+  - Swap
+  - Number
   layers:
   - Default
   - TransparentFX

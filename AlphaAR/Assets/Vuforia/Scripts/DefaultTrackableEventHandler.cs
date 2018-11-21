@@ -25,15 +25,20 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     protected TrackableBehaviour.Status m_PreviousStatus;
     protected TrackableBehaviour.Status m_NewStatus;
     GameObject childObject = null;
-    GameObject animalObject = null;
+    GameObject numberObject = null;
     GameObject target;
     GameObject sound;
-    GameObject[] animals;
+    GameObject swapObject = null;
+    GameObject[] numbers;
     SortedList mapped = new SortedList();
+    String[] numberList = { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE" };
 
     String curMsg = "";
+    String numberStr = "";
 
-    int animalIdx = 0;
+    int numberIdx = 0;
+
+    bool flag = false;
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
@@ -42,8 +47,14 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     protected virtual void Start()
     {
         target = GameObject.FindGameObjectWithTag("Alphabet");
-        animals = GameObject.FindGameObjectsWithTag("Animal");
+        numbers = GameObject.FindGameObjectsWithTag("Number");
+
         sound = GameObject.FindGameObjectWithTag("Sound");
+        swapObject = GameObject.FindGameObjectWithTag("Swap");
+
+        swapObject.GetComponent<Swap>().setModel(GameObject.Find(numberList[numberIdx]));
+
+        numberStr = numberList[0];
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -61,6 +72,13 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     {
         String swapStr = "<size=22>SWAP</size>";
         String soundStr = "<size=22>SOUND</size>";
+        String nextStr = "<size=22>NEXT</size>";
+
+        if (numberIdx == numbers.Length)
+        {
+            numberIdx = 0;
+        }
+       
         //GUI버튼 생성 클릭 하면 참
         if (GUI.Button(new Rect(10, 10, 300, 80), swapStr))
         {
@@ -71,29 +89,30 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
                 childObject = getChildObject(target, i);
                 if (childObject.GetComponent<ImageFlag>().getFlag() == true)
                 {
-                    mapped.Add(childObject.GetComponent<ImageFlag>().getX(), childObject.name.Substring(11));
+                    mapped.Add(childObject.GetComponent<ImageFlag>().getX(), childObject.name.Substring(11,1));
                 }
             }
 
             curMsg = getMsg(mapped);
 
-            for (int i = 0; i < animals.Length; i++)
+            for (int i = 0; i < numbers.Length; i++)
             {
-                if (curMsg.Equals(animals[i].name))
+                if (curMsg.Equals(numbers[i].name))
                 {
                     state = true;
-                    animalObject = animals[i];
+                    numberObject = numbers[i];
                     break;
                 }
             }
 
-            if (state)
+            if (state&&curMsg.Equals(numberStr))
             {
                 String middleChar = "";
                 for (int i = 0; i < curMsg.Length; i++)
                 {
                     if (i==curMsg.Length/2){
-                        middleChar = curMsg.Substring(i, i);
+                        middleChar = curMsg.Substring(i, 1);
+                        break;
                     }
                 }
 
@@ -101,15 +120,19 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
                     childObject = getChildObject(target, i);
                     childObject.GetComponent<ImageFlag>().setChildFalse();
                 }
-
+                Debug.Log("middle char is " + middleChar);
                 for (int i = 0; i < target.transform.childCount;i++){
                     childObject = getChildObject(target, i);
-                    if(childObject.name.Substring(11).Equals(middleChar)){
-                        animalObject.transform.parent = childObject.transform;
-                        animalObject.transform.localPosition = new Vector3(0, 0, 0);
-                        animalObject.transform.localRotation = Quaternion.identity;
-                        animalObject.transform.localScale = new Vector3(1, 1, 1);
-                        animalObject.SetActive(true);
+                    if (childObject.name.Substring(11, 1).Equals(middleChar))
+                    {
+                        Debug.Log(numberObject.name + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        Debug.Log(childObject.transform + "paaaaaaaaaaaaaaaareeeeeeeeeeeeeen");
+                        numberObject.transform.parent = childObject.transform;
+                        numberObject.transform.localPosition = new Vector3(0, 1, 0);
+                        numberObject.transform.localRotation = Quaternion.identity;
+                        numberObject.transform.localScale = new Vector3(1, 1, 1);
+                        numberObject.SetActive(true);
+
                         break;
                     }
                     
@@ -126,19 +149,36 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
         if (GUI.Button(new Rect(10, 110, 300, 80), soundStr))
         {
-            if(animalIdx==animals.Length){
-                animalIdx = 0;
-            }
             for (int i = 0; i < sound.transform.childCount;i++){
                 childObject = getChildObject(sound, i);
-                if(childObject.name.Equals(animals[animalIdx].name)){
+                if(childObject.name.Equals(numberStr)){
                     childObject.GetComponent<AudioSource>().Play();
                     break;
                 }
             }
 
-            animalIdx++;
+
         }
+
+        if(GUI.Button(new Rect(10,210,300,80),nextStr)){
+            numberIdx++;
+            if (numberIdx == numbers.Length)
+            {
+                numberIdx = 0;
+            }
+            numberStr = numberList[numberIdx];
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                if (numberStr.Equals(numbers[i].name))
+                {
+                    swapObject.GetComponent<Swap>().setModel(numbers[i]);
+                    break;
+                }
+            }
+            flag = true;
+        }
+        if (flag)
+            GUI.Label(new Rect(510, 10, 700, 210), "<size=150>" + numberStr + "</size>");
     }
 
     public String getMsg(SortedList list){
@@ -200,8 +240,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
                 childObject.GetComponent<ImageFlag>().setChildTrue();
             }
 
-            for (int i = 0; i < animals.Length;i++){
-                animals[i].SetActive(false);
+            for (int i = 0; i < numbers.Length;i++){
+                numbers[i].SetActive(false);
             }
             curMsg = setMsgEmpty();
             OnTrackingLost();

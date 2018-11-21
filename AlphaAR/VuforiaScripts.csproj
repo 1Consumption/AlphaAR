@@ -65,6 +65,7 @@
     <Compile Include="Assets\Vuforia\Scripts\DefaultTrackableEventHandler.cs" />
     <Compile Include="Assets\Vuforia\Scripts\ImageFlag.cs" />
     <Compile Include="Assets\Vuforia\Scripts\Rotate.cs" />
+    <Compile Include="Assets\Vuforia\Scripts\Swap.cs" />
     <Compile Include="Assets\Vuforia\Scripts\Visibility.cs" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
