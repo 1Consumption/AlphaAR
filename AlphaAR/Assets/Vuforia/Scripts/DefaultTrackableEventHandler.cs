@@ -7,9 +7,10 @@ Confidential and Proprietary - Protected under copyright and other laws.
 ==============================================================================*/
 
 using UnityEngine;
+using UnityEngine.UI;
 using Vuforia;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
@@ -24,21 +25,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     protected TrackableBehaviour mTrackableBehaviour;
     protected TrackableBehaviour.Status m_PreviousStatus;
     protected TrackableBehaviour.Status m_NewStatus;
-    GameObject childObject = null;
-    GameObject numberObject = null;
-    GameObject target;
-    GameObject sound;
-    GameObject swapObject = null;
-    GameObject[] numbers;
-    SortedList mapped = new SortedList();
-    String[] numberList = { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE" };
 
-    String curMsg = "";
-    String numberStr = "";
-
-    int numberIdx = 0;
-
-    bool flag = false;
+    public static SortedList<float, string> trackableItems = new SortedList<float, string>();//to save the card name & position x
+    public static string trackableMsg; //current tracked card string
+    public static bool sloss = false;
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
@@ -46,15 +36,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Alphabet");
-        numbers = GameObject.FindGameObjectsWithTag("Number");
-
-        sound = GameObject.FindGameObjectWithTag("Sound");
-        swapObject = GameObject.FindGameObjectWithTag("Swap");
-
-        swapObject.GetComponent<Swap>().setModel(GameObject.Find(numberList[numberIdx]));
-
-        numberStr = numberList[0];
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -68,142 +49,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
-    void OnGUI()
+    private void Update()
     {
-        String swapStr = "<size=22>SWAP</size>";
-        String soundStr = "<size=22>SOUND</size>";
-        String nextStr = "<size=22>NEXT</size>";
 
-        if (numberIdx == numbers.Length)
-        {
-            numberIdx = 0;
-        }
-       
-        //GUI버튼 생성 클릭 하면 참
-        if (GUI.Button(new Rect(10, 10, 300, 80), swapStr))
-        {
-            bool state = false;
-
-            for (int i = 0; i < target.transform.childCount; i++)
-            {
-                childObject = getChildObject(target, i);
-                if (childObject.GetComponent<ImageFlag>().getFlag() == true)
-                {
-                    mapped.Add(childObject.GetComponent<ImageFlag>().getX(), childObject.name.Substring(11,1));
-                }
-            }
-
-            curMsg = getMsg(mapped);
-
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                if (curMsg.Equals(numbers[i].name))
-                {
-                    state = true;
-                    numberObject = numbers[i];
-                    break;
-                }
-            }
-
-            if (state&&curMsg.Equals(numberStr))
-            {
-                String middleChar = "";
-                for (int i = 0; i < curMsg.Length; i++)
-                {
-                    if (i==curMsg.Length/2){
-                        middleChar = curMsg.Substring(i, 1);
-                        break;
-                    }
-                }
-
-                for (int i = 0; i < target.transform.childCount;i++){
-                    childObject = getChildObject(target, i);
-                    childObject.GetComponent<ImageFlag>().setChildFalse();
-                }
-                Debug.Log("middle char is " + middleChar);
-                for (int i = 0; i < target.transform.childCount;i++){
-                    childObject = getChildObject(target, i);
-                    if (childObject.name.Substring(11, 1).Equals(middleChar))
-                    {
-                        Debug.Log(numberObject.name + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                        Debug.Log(childObject.transform + "paaaaaaaaaaaaaaaareeeeeeeeeeeeeen");
-                        numberObject.transform.parent = childObject.transform;
-                        numberObject.transform.localPosition = new Vector3(0, 1, 0);
-                        numberObject.transform.localRotation = Quaternion.identity;
-                        numberObject.transform.localScale = new Vector3(1, 1, 1);
-                        numberObject.SetActive(true);
-
-                        break;
-                    }
-                    
-                }
-
-            }
-            else
-            {
-                Debug.Log("invalid!");
-            }
-            mapped.Clear();
-            curMsg = setMsgEmpty();
-        }
-
-        if (GUI.Button(new Rect(10, 110, 300, 80), soundStr))
-        {
-            for (int i = 0; i < sound.transform.childCount;i++){
-                childObject = getChildObject(sound, i);
-                if(childObject.name.Equals(numberStr)){
-                    childObject.GetComponent<AudioSource>().Play();
-                    break;
-                }
-            }
-
-
-        }
-
-        if(GUI.Button(new Rect(10,210,300,80),nextStr)){
-            numberIdx++;
-            if (numberIdx == numbers.Length)
-            {
-                numberIdx = 0;
-            }
-            numberStr = numberList[numberIdx];
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                if (numberStr.Equals(numbers[i].name))
-                {
-                    swapObject.GetComponent<Swap>().setModel(numbers[i]);
-                    break;
-                }
-            }
-            flag = true;
-        }
-        if (flag)
-            GUI.Label(new Rect(510, 10, 700, 210), "<size=150>" + numberStr + "</size>");
     }
-
-    public String getMsg(SortedList list){
-        String temp = "";
-        for (int i = 0; i < list.Count;i++){
-            temp += list.GetByIndex(i);
-        }
-
-        Debug.Log("getMsg : " + temp);
-        return temp;
-    }
-
-    public String setMsgEmpty(){
-        return "";
-    }
-
-    public GameObject getChildObject(GameObject obj,int idx){
-        return obj.transform.GetChild(idx).gameObject;
-    }
-
-
-    //private void Update()
-    //{
-
-    //}
 
     #region PUBLIC_METHODS
 
@@ -211,6 +60,59 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     ///     Implementation of the ITrackableEventHandler function called when the
     ///     tracking state changes.
     /// </summary>
+
+    public static void updateMsg()
+    {
+        trackableMsg = "";
+        foreach (KeyValuePair<float, string> kv in trackableItems)
+        {
+            trackableMsg = trackableMsg + kv.Value[0];
+        }
+        ChkMsg();
+    }
+    public static string ChkMsg()
+    {
+        Debug.Log("-------MSG:" + trackableMsg);
+        return trackableMsg;
+    }
+    public static void EditMsg(bool i, string str, float x) //determine currently trackable msg
+    {
+        if (i) //add found trackable target
+        {
+            trackableItems.Add(x, str);
+        }
+        else  //remove lost trackable target
+        {
+            int idx = 0;
+            foreach (KeyValuePair<float, string> kv in trackableItems)
+            {
+                if (kv.Value.Equals(str))
+                {
+                    trackableItems.RemoveAt(idx);
+                    break;
+                }
+                else
+                {
+                    idx++;
+                }
+            }
+        }
+        updateMsg();
+    }
+
+    public static bool getStateLoss()
+    {
+        return sloss;
+    }
+    public static void setStateLoss(bool state)
+    {
+        sloss = state;
+    }
+    public static string getTargetinMiddleString()
+    {
+        return "ImageTarget" + trackableItems.Values[trackableItems.Count / 2];
+    }
+
     public void OnTrackableStateChanged(
         TrackableBehaviour.Status previousStatus,
         TrackableBehaviour.Status newStatus)
@@ -223,27 +125,20 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
+            EditMsg(true, mTrackableBehaviour.TrackableName, mTrackableBehaviour.transform.position.x);
 
             mTrackableBehaviour.GetComponent<ImageFlag>().setFlag(true);
-            Debug.Log(mTrackableBehaviour.TrackableName + " is " + GameObject.Find("ImageTarget" + mTrackableBehaviour.TrackableName).GetComponent<ImageFlag>().getFlag());
             OnTrackingFound();
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+            EditMsg(false, mTrackableBehaviour.TrackableName, mTrackableBehaviour.transform.position.x);
+
+            setStateLoss(true);
             mTrackableBehaviour.GetComponent<ImageFlag>().setFlag(false);
-            Debug.Log(mTrackableBehaviour.TrackableName+" is "+ GameObject.Find("ImageTarget" + mTrackableBehaviour.TrackableName).GetComponent<ImageFlag>().getFlag());
 
-            for (int i = 0; i < target.transform.childCount;i++){
-                childObject = getChildObject(target, i);
-                childObject.GetComponent<ImageFlag>().setChildTrue();
-            }
-
-            for (int i = 0; i < numbers.Length;i++){
-                numbers[i].SetActive(false);
-            }
-            curMsg = setMsgEmpty();
             OnTrackingLost();
         }
         else
@@ -254,6 +149,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             OnTrackingLost();
         }
     }
+
 
     #endregion // PUBLIC_METHODS
 
@@ -299,6 +195,4 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     }
 
     #endregion // PROTECTED_METHODS
-
-
 }

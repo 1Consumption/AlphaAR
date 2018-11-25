@@ -1,12 +1,10 @@
-﻿<Properties StartupConfiguration="{46D99315-6A77-AF91-BE43-4D223709E0AB}|">
+﻿<Properties StartupConfiguration="{0F287366-46CE-A582-9ECC-14D53937E0C3}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Vuforia/Scripts/DefaultTrackableEventHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/testButton.cs">
     <Files>
-      <File FileName="Assets/Vuforia/Scripts/DefaultTrackableEventHandler.cs" Line="133" Column="1" />
-      <File FileName="Assets/Vuforia/Scripts/ImageFlag.cs" Line="29" Column="23" />
-      <File FileName="Assets/Vuforia/Scripts/Swap.cs" Line="24" Column="47" />
-      <File FileName="Assets/Vuforia/Scripts/Visibility.cs" Line="8" Column="24" />
-      <File FileName="Assets/Vuforia/Scripts/Rotate.cs" Line="4" Column="1" />
+      <File FileName="Assets/Vuforia/Scripts/DefaultTrackableEventHandler.cs" Line="140" Column="28" />
+      <File FileName="Assets/Vuforia/Scripts/Learn.cs" Line="146" Column="70" />
+      <File FileName="Assets/testButton.cs" Line="19" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
