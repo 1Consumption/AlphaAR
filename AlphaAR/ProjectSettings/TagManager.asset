@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Alphabet
   - Animal
+  - Sound
+  - Swap
+  - Number
+  - alphabet3D
   layers:
   - Default
   - TransparentFX
@@ -42,4 +46,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1501888989
     locked: 0

@@ -6,6 +6,7 @@ using Vuforia;
 public class Visibility : MonoBehaviour {
 
     GameObject Animals;
+    GameObject Numbers;
 	// Use this for initialization
 	void Start () {
         Animals = GameObject.Find("Animals");

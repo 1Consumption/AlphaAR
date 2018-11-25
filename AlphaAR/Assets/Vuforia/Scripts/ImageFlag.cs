@@ -18,19 +18,18 @@ public class ImageFlag : MonoBehaviour
 
     }
 
-    public void setFlag(bool rcv){
+    public void setFlag(bool rcv)
+    {
         this.flag = rcv;
     }
 
-    public bool getFlag(){
+    public bool getFlag()
+    {
         return this.flag;
     }
 
-    public float getYPosition(){
-        return this.transform.position.y;
-    }
-
-    public void setChildFalse(){
+    public void setChildFalse()
+    {
         for (int i = 0; i < theTrackable.transform.childCount; i++)
         {
             Transform child = theTrackable.transform.GetChild(i);
@@ -44,6 +43,30 @@ public class ImageFlag : MonoBehaviour
         {
             Transform child = theTrackable.transform.GetChild(i);
             child.gameObject.SetActive(true);
+        }
+    }
+
+    public void setAlphabetChildFalse()
+    {
+        for (int i = 0; i < theTrackable.transform.childCount; i++)
+        {
+            Transform child = theTrackable.transform.GetChild(i);
+            if (child.tag == "alphabet3D")
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void setAlphabetChildTrue()
+    {
+        for (int i = 0; i < theTrackable.transform.childCount; i++)
+        {
+            Transform child = theTrackable.transform.GetChild(i);
+            if (child.tag == "alphabet3D")
+            {
+                child.gameObject.SetActive(true);
+            }
         }
     }
 }

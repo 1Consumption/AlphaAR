@@ -7,8 +7,10 @@ Confidential and Proprietary - Protected under copyright and other laws.
 ==============================================================================*/
 
 using UnityEngine;
+using UnityEngine.UI;
 using Vuforia;
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
@@ -23,11 +25,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     protected TrackableBehaviour mTrackableBehaviour;
     protected TrackableBehaviour.Status m_PreviousStatus;
     protected TrackableBehaviour.Status m_NewStatus;
-    GameObject cat;
-    GameObject[] target;
-    GameObject[] animals;
-    bool flag = false;
-    int index = 0;
+
+    public static SortedList<float, string> trackableItems = new SortedList<float, string>();//to save the card name & position x
+    public static string trackableMsg; //current tracked card string
+    public static bool sloss = false;
 
     #endregion // PROTECTED_MEMBER_VARIABLES
 
@@ -35,11 +36,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     protected virtual void Start()
     {
-        target = GameObject.FindGameObjectsWithTag("Alphabet");
-        //Debug.Log(Math.Ceiling((float)target.Length / (float)2));
-        cat = GameObject.Find("CAT");
-        animals = GameObject.FindGameObjectsWithTag("Animal");
-
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -53,66 +49,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
-    void OnGUI()
+    private void Update()
     {
-        //GUI버튼 생성 클릭 하면 참
-        if (GUI.Button(new Rect(10, 10, 300, 80), "swap"))
-        {
-            bool state = true;
-            for (int i = 0; i < target.Length;i++){
-                if(target[i].GetComponent<ImageFlag>().getFlag()==false){
-                    state = false;
-                }
-            }
 
-            if (state)
-            {
-                //for (int i = 0; i < target.Length-1; i++)
-                //{
-                //    if (target[i].transform.position.y>target[i+1].transform.position.y)
-                //    {
-                //        state = false;
-                //    }
-                //}
-                if (state)
-                {
-                    for (int i = 0; i < target.Length;i++){
-
-                        target[i].GetComponent<ImageFlag>().setChildFalse();
-                    }
-
-                    if (flag == false)
-                    {
-                        cat.transform.parent = target[target.Length/2].transform;
-                        // Adjust the position and scale
-                        // so that it fits nicely on the target
-                        cat.transform.localPosition = new Vector3(0, 0.2f, 0);
-                        cat.transform.localRotation = Quaternion.identity;
-                        cat.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-                        flag = true;
-                    }
-                    cat.SetActive(true);
-
-                } else{
-                    Debug.Log("invalid!");
-                }
-            }
-        }
-
-        if (GUI.Button(new Rect(10, 100, 300, 80), "recovery"))
-        {
-            for (int i = 0; i < target.Length;i++){
-                target[i].GetComponent<ImageFlag>().setChildTrue();
-            }
-            cat.SetActive(false);
-        }
     }
-
-
-    //private void Update()
-    //{
-
-    //}
 
     #region PUBLIC_METHODS
 
@@ -120,6 +60,59 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     ///     Implementation of the ITrackableEventHandler function called when the
     ///     tracking state changes.
     /// </summary>
+
+    public static void updateMsg()
+    {
+        trackableMsg = "";
+        foreach (KeyValuePair<float, string> kv in trackableItems)
+        {
+            trackableMsg = trackableMsg + kv.Value[0];
+        }
+        ChkMsg();
+    }
+    public static string ChkMsg()
+    {
+        Debug.Log("-------MSG:" + trackableMsg);
+        return trackableMsg;
+    }
+    public static void EditMsg(bool i, string str, float x) //determine currently trackable msg
+    {
+        if (i) //add found trackable target
+        {
+            trackableItems.Add(x, str);
+        }
+        else  //remove lost trackable target
+        {
+            int idx = 0;
+            foreach (KeyValuePair<float, string> kv in trackableItems)
+            {
+                if (kv.Value.Equals(str))
+                {
+                    trackableItems.RemoveAt(idx);
+                    break;
+                }
+                else
+                {
+                    idx++;
+                }
+            }
+        }
+        updateMsg();
+    }
+
+    public static bool getStateLoss()
+    {
+        return sloss;
+    }
+    public static void setStateLoss(bool state)
+    {
+        sloss = state;
+    }
+    public static string getTargetinMiddleString()
+    {
+        return "ImageTarget" + trackableItems.Values[trackableItems.Count / 2];
+    }
+
     public void OnTrackableStateChanged(
         TrackableBehaviour.Status previousStatus,
         TrackableBehaviour.Status newStatus)
@@ -132,22 +125,20 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
+            EditMsg(true, mTrackableBehaviour.TrackableName, mTrackableBehaviour.transform.position.x);
 
             mTrackableBehaviour.GetComponent<ImageFlag>().setFlag(true);
-            Debug.Log(mTrackableBehaviour.TrackableName + " is " + GameObject.Find("ImageTarget" + mTrackableBehaviour.TrackableName).GetComponent<ImageFlag>().getFlag());
             OnTrackingFound();
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
-            mTrackableBehaviour.GetComponent<ImageFlag>().setFlag(false);
-            Debug.Log(mTrackableBehaviour.TrackableName+" is "+ GameObject.Find("ImageTarget" + mTrackableBehaviour.TrackableName).GetComponent<ImageFlag>().getFlag());
+            EditMsg(false, mTrackableBehaviour.TrackableName, mTrackableBehaviour.transform.position.x);
 
-            for (int i = 0; i < target.Length;i++){
-                target[i].GetComponent<ImageFlag>().setChildTrue();
-            }
-            cat.SetActive(false);
+            setStateLoss(true);
+            mTrackableBehaviour.GetComponent<ImageFlag>().setFlag(false);
+
             OnTrackingLost();
         }
         else
@@ -158,6 +149,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
             OnTrackingLost();
         }
     }
+
 
     #endregion // PUBLIC_METHODS
 
@@ -203,6 +195,4 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
     }
 
     #endregion // PROTECTED_METHODS
-
-
 }
