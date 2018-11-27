@@ -37,9 +37,12 @@ public class Learn : MonoBehaviour
 
     void OnGUI()
     {
-        String swapStr = "<size=22>SWAP</size>";
-        String soundStr = "<size=22>SOUND</size>";
-        String nextStr = "<size=22>NEXT</size>";
+        int height = Screen.height;
+        int width = Screen.width;
+        String swapStr = "<size=30>SWAP</size>";
+        String soundStr = "<size=30>SOUND</size>";
+        String nextStr = "<size=30>NEXT</size>";
+        String returnMenu = "<size=30>RETURN TO MENU</size>";
 
         if (numberIdx == numbers.Length)
         {
@@ -74,6 +77,7 @@ public class Learn : MonoBehaviour
                     childObject = getChildObject(target, i);
                     if (childObject.name.Substring(11, 1).Equals(middleTargetName.Substring(11,1)))
                     {
+                        DefaultTrackableEventHandler.setStateLoss(false);
                         Debug.Log(numberObject.name + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                         Debug.Log(childObject.transform + "paaaaaaaaaaaaaaaareeeeeeeeeeeeeen");
                         numberObject.transform.parent = childObject.transform;
@@ -127,6 +131,12 @@ public class Learn : MonoBehaviour
             Debug.Log("cur num : " + numberStr);
             flag = true;
         }
+
+        if (GUI.Button(new Rect(10, 310, 300, 80), returnMenu))
+        {
+            Application.LoadLevel("button");
+        }
+
         if (flag)
             GUI.Label(new Rect(510, 10, 700, 210), "<size=150>" + numberStr + "</size>");
     }
@@ -142,12 +152,11 @@ public class Learn : MonoBehaviour
         lossFlag = DefaultTrackableEventHandler.getStateLoss();
         if(lossFlag==true){
             for (int i = 0; i < target.transform.childCount;i++){
+                Debug.Log("innnnnnnnnnnnnnnnnnnnnnnn");
                 childObject = getChildObject(target, i);
                 childObject.GetComponent<ImageFlag>().setChildTrue();
-            }
-
-            for (int i = 0; i < numbers.Length;i++){
-                numbers[i].SetActive(false);
+                childObject.GetComponent<ImageFlag>().setNumberChildFalse();
+                swapObject.GetComponent<Swap>().setModel(GameObject.Find(numberList[numberIdx]));
             }
         }else{
             for (int i = 0; i < numbers.Length; i++){

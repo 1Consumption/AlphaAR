@@ -69,4 +69,27 @@ public class ImageFlag : MonoBehaviour
             }
         }
     }
+
+    public void setNumberChildTrue(){
+        for (int i = 0; i < theTrackable.transform.childCount; i++)
+        {
+            Transform child = theTrackable.transform.GetChild(i);
+            if (child.tag == "Number")
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void setNumberChildFalse()
+    {
+        for (int i = 0; i < theTrackable.transform.childCount; i++)
+        {
+            Transform child = theTrackable.transform.GetChild(i);
+            if (child.tag == "Number")
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
 }

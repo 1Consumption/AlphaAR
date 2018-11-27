@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class testmode : MonoBehaviour {
 
@@ -14,9 +15,12 @@ public class testmode : MonoBehaviour {
     public GameObject quizPosImg;
     public int[] idx;
 
-    //public static SortedList<float, string> trackableItems = new SortedList<float, string>();//to save the card name & position x
+    public bool isDone = false;
+    public GameObject quizEndScreen;
+    public TextMesh scoreText;
+    int score = 0;
+
     public static string trackableMsg; //current tracked card string
-    
     public string lastShowObj = null;
     
     public static SortedList<string, GameObject> modelObj = new SortedList<string, GameObject>(); //match with the string and model
@@ -34,20 +38,13 @@ public class testmode : MonoBehaviour {
         {
             modelObj.Add(models[i].name, models[i]);
             models[i].SetActive(false);
-//            Debug.Log("#set model" + models[i].name);
         }
-
-        //int[] idx = getRandomIntArr(10, 0, modelObj.Count); //after increasing model number over 10.
+        
         idx = getRandomIntArr(modelObj.Count, 0, modelObj.Count);
+        isDone = false;
 
         quizGage.value = quizI + 1;
         Quiz(modelObj.Values[idx[quizI]]);
-    
-        /*
-        foreach (KeyValuePair<string, GameObject> kv in modelObj)
-        {
-            kv.Value.SetActive(false);
-        }*/
     }
 
 
@@ -71,7 +68,7 @@ public class testmode : MonoBehaviour {
         {
             do
             {
-                randArr[i] = Random.Range(min, max);
+                randArr[i] = UnityEngine.Random.Range(min, max);
                 isDiffer = true;
                 for (int j = 0; j < i; j++)
                 {
@@ -110,7 +107,8 @@ public class testmode : MonoBehaviour {
 
             DefaultTrackableEventHandler.setStateLoss(false);
             anim.SetInteger("action", 1);
-            
+            GameObject.Find("sndRight").GetComponent<AudioSource>().Play();
+            score += 10;
             s3DModel = true;
         }
         else //No matching result
@@ -118,6 +116,8 @@ public class testmode : MonoBehaviour {
             Debug.Log("NO :" + trackableMsg);
             s3DModel = false;
             anim.SetInteger("action", 2);
+            GameObject.Find("sndWrong").GetComponent<AudioSource>().Play();
+
         }
         StartCoroutine("test");
         
@@ -149,10 +149,14 @@ public class testmode : MonoBehaviour {
         }
         
         quizI++;
-        if (quizI < modelObj.Count)
+        if (quizI+1 < modelObj.Count)
         {
             quizGage.value = quizI + 1;
             Quiz(modelObj.Values[idx[quizI]]);
+        }
+        else
+        {
+            isDone = true;
         }
     }
     private void getSwapBack()
@@ -202,9 +206,27 @@ public class testmode : MonoBehaviour {
             //    finish the quiz + result report 
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+    private void OnGUI()
+    {
+        String returnMenu = "<size=30>RETURN TO MENU</size>";
+        if (GUI.Button(new Rect(10, 10, 300, 80), returnMenu))
+        {
+            Application.LoadLevel("button");
+        }
+
+        if (!isDone)
+        {
+            quizEndScreen.SetActive(false);
+        }
+        else
+        {
+            quizEndScreen.SetActive(true);
+            scoreText.text = "" + score;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
         sloss = DefaultTrackableEventHandler.getStateLoss();
         if (sloss && s3DModel)
         {
