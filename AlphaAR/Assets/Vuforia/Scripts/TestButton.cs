@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TestButton : MonoBehaviour
 {
@@ -53,12 +54,12 @@ public class TestButton : MonoBehaviour
         string quit = "<size=50><i>Quit</i></size>";
         if (GUI.Button(new Rect(width / 2 - xValue / 2, height / 2 - yValue / 2, xValue, yValue), learn))
         {
-            Application.LoadLevel("SampleScene");
+            SceneManager.LoadScene("theme");
         }
 
         if (GUI.Button(new Rect(width / 2 - xValue / 2, height / 2 + yValue, xValue, yValue), quiz))
         {
-            Application.LoadLevel("quizMode");
+            SceneManager.LoadScene("quizMode");
         }
 
         if (GUI.Button(new Rect(width / 2 - xValue / 2, height / 2 + (int)(yValue*2.5), xValue, yValue), quit))

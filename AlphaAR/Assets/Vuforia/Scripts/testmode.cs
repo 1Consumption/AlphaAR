@@ -211,7 +211,7 @@ public class testmode : MonoBehaviour {
         String returnMenu = "<size=30>RETURN TO MENU</size>";
         if (GUI.Button(new Rect(10, 10, 300, 80), returnMenu))
         {
-            Application.LoadLevel("button");
+            Application.LoadLevel("Intro");
         }
 
         if (!isDone)

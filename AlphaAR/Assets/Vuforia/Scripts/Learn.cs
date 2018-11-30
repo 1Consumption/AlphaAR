@@ -6,18 +6,18 @@ using System;
 public class Learn : MonoBehaviour
 {
     GameObject childObject = null;
-    GameObject numberObject = null;
+    GameObject curObject = null;
     GameObject target;
     GameObject sound;
     GameObject swapObject = null;
-    GameObject[] numbers;
+    GameObject[] objects;
     SortedList mapped = new SortedList();
-    String[] numberList = { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE" };
+    String[,] objectList = { { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" }, { "none", "none", "none", "none", "none", "none", "none", "none", "none", "none" } };
 
     String curMsg = "";
-    String numberStr = "";
+    String objectStr = "";
     String middleTargetName= "";
-    int numberIdx = 0;
+    int objectIdx = 0;
 
     bool lossFlag = false;
     bool flag = false;
@@ -25,14 +25,14 @@ public class Learn : MonoBehaviour
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Alphabet");
-        numbers = GameObject.FindGameObjectsWithTag("Number");
+        objects = GameObject.FindGameObjectsWithTag(ThemeScript.theme);
         sound = GameObject.FindGameObjectWithTag("Sound");
         swapObject = GameObject.FindGameObjectWithTag("Swap");
         if (swapObject != null)
         {
-            swapObject.GetComponent<Swap>().setModel(GameObject.Find(numberList[numberIdx]));
+            swapObject.GetComponent<Swap>().setModel(GameObject.Find(objectList[ThemeScript.themeIdx,objectIdx]));
         }
-        numberStr = numberList[0];
+        objectStr = objectList[ThemeScript.themeIdx, 0];
     }
 
     void OnGUI()
@@ -44,56 +44,61 @@ public class Learn : MonoBehaviour
         String nextStr = "<size=30>NEXT</size>";
         String returnMenu = "<size=30>RETURN TO MENU</size>";
 
-        if (numberIdx == numbers.Length)
+        if (objectIdx == objects.Length)
         {
-            numberIdx = 0;
+            objectIdx = 0;
         }
 
         //GUI버튼 생성 클릭 하면 참
         if (GUI.Button(new Rect(10, 10, 300, 80), swapStr))
         {
-            curMsg = DefaultTrackableEventHandler.ChkMsg();
-            middleTargetName = DefaultTrackableEventHandler.getTargetinMiddleString();
-            Debug.Log("cur msg : " + curMsg);
-            Debug.Log("가운데 이름 : " + DefaultTrackableEventHandler.getTargetinMiddleString());
-
-            if (curMsg.Equals(numberStr))
+            if (DefaultTrackableEventHandler.trackableItems.Count != 0)
             {
-                for (int i = 0; i < target.transform.childCount; i++)
-                {
-                    childObject = getChildObject(target, i);
-                    childObject.GetComponent<ImageFlag>().setChildFalse();
-                }
+                curMsg = DefaultTrackableEventHandler.ChkMsg();
+                middleTargetName = DefaultTrackableEventHandler.getTargetinMiddleString();
+                Debug.Log("cur msg : " + curMsg);
+                Debug.Log("가운데 이름 : " + DefaultTrackableEventHandler.getTargetinMiddleString());
 
-                for (int i = 0; i < numbers.Length;i++){
-                    if(numbers[i].name.Equals(curMsg)){
-                        numberObject = numbers[i];
-                        break;
-                    }
-                }
-                Debug.Log("middle char is " + middleTargetName);
-                for (int i = 0; i < target.transform.childCount; i++)
+                if (curMsg.Equals(objectStr))
                 {
-                    childObject = getChildObject(target, i);
-                    if (childObject.name.Substring(11, 1).Equals(middleTargetName.Substring(11,1)))
+                    for (int i = 0; i < target.transform.childCount; i++)
                     {
-                        DefaultTrackableEventHandler.setStateLoss(false);
-                        Debug.Log(numberObject.name + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                        Debug.Log(childObject.transform + "paaaaaaaaaaaaaaaareeeeeeeeeeeeeen");
-                        numberObject.transform.parent = childObject.transform;
-                        numberObject.transform.localPosition = new Vector3(0, 1, 0);
-                        numberObject.transform.localRotation = Quaternion.identity;
-                        numberObject.transform.localScale = new Vector3(1, 1, 1);
-                        numberObject.SetActive(true);
-                        break;
+                        childObject = getChildObject(target, i);
+                        childObject.GetComponent<ImageFlag>().setChildFalse();
+                    }
+
+                    for (int i = 0; i < objects.Length; i++)
+                    {
+                        if (objects[i].name.Equals(curMsg))
+                        {
+                            curObject = objects[i];
+                            break;
+                        }
+                    }
+                    Debug.Log("middle char is " + middleTargetName);
+                    for (int i = 0; i < target.transform.childCount; i++)
+                    {
+                        childObject = getChildObject(target, i);
+                        if (childObject.name.Substring(11, 1).Equals(middleTargetName.Substring(11, 1)))
+                        {
+                            DefaultTrackableEventHandler.setStateLoss(false);
+                            Debug.Log(curObject.name + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                            Debug.Log(childObject.transform + "paaaaaaaaaaaaaaaareeeeeeeeeeeeeen");
+                            curObject.transform.parent = childObject.transform;
+                            curObject.transform.localPosition = new Vector3(0, 1, 0);
+                            curObject.transform.localRotation = Quaternion.identity;
+                            curObject.transform.localScale = new Vector3(1, 1, 1);
+                            curObject.SetActive(true);
+                            break;
+                        }
+
                     }
 
                 }
-
-            }
-            else
-            {
-                Debug.Log("invalid!");
+                else
+                {
+                    Debug.Log("invalid!");
+                }
             }
         }
 
@@ -102,7 +107,7 @@ public class Learn : MonoBehaviour
             for (int i = 0; i < sound.transform.childCount; i++)
             {
                 childObject = getChildObject(sound, i);
-                if (childObject.name.Equals(numberStr))
+                if (childObject.name.Equals(objectStr))
                 {
                     childObject.GetComponent<AudioSource>().Play();
                     break;
@@ -113,32 +118,32 @@ public class Learn : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 210, 300, 80), nextStr))
         {
-            numberIdx++;
-            if (numberIdx == numbers.Length)
+            objectIdx++;
+            if (objectIdx == objects.Length)
             {
-                numberIdx = 0;
+                objectIdx = 0;
             }
-            numberStr = numberList[numberIdx];
-            for (int i = 0; i < numbers.Length; i++)
+            objectStr = objectList[ThemeScript.themeIdx, objectIdx];
+            for (int i = 0; i < objects.Length; i++)
             {
-                if (numberStr.Equals(numbers[i].name))
+                if (objectStr.Equals(objects[i].name))
                 {
                     DefaultTrackableEventHandler.setStateLoss(false);
-                    swapObject.GetComponent<Swap>().setModel(numbers[i]);
+                    swapObject.GetComponent<Swap>().setModel(objects[i]);
                     break;
                 }
             }
-            Debug.Log("cur num : " + numberStr);
+            Debug.Log("cur num : " + objectStr);
             flag = true;
         }
 
         if (GUI.Button(new Rect(10, 310, 300, 80), returnMenu))
         {
-            Application.LoadLevel("button");
+            Application.LoadLevel("Intro");
         }
 
         if (flag)
-            GUI.Label(new Rect(510, 10, 700, 210), "<size=150>" + numberStr + "</size>");
+            GUI.Label(new Rect(510, 10, 700, 210), "<size=150>" + objectStr + "</size>");
     }
 
     public GameObject getChildObject(GameObject obj, int idx)
@@ -156,12 +161,12 @@ public class Learn : MonoBehaviour
                 childObject = getChildObject(target, i);
                 childObject.GetComponent<ImageFlag>().setChildTrue();
                 childObject.GetComponent<ImageFlag>().setNumberChildFalse();
-                swapObject.GetComponent<Swap>().setModel(GameObject.Find(numberList[numberIdx]));
+                swapObject.GetComponent<Swap>().setModel(GameObject.Find(objectList[ThemeScript.themeIdx, objectIdx]));
             }
         }else{
-            for (int i = 0; i < numbers.Length; i++){
-                if(numbers[i].name.Equals(numberStr)){
-                    numbers[i].SetActive(true);
+            for (int i = 0; i < objects.Length; i++){
+                if(objects[i].name.Equals(objectStr)){
+                    objects[i].SetActive(true);
                     break;
                 }
             }

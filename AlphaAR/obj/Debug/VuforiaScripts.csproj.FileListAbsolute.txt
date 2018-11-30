@@ -1,0 +1,2 @@
+/Users/hansseop/AlphaAR/AlphaAR/obj/Debug/VuforiaScripts.csprojAssemblyReference.cache
+/Users/hansseop/AlphaAR/AlphaAR/obj/Debug/VuforiaScripts.csproj.CoreCompileInputs.cache
