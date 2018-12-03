@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.74509805, g: 0.78823537, b: 0.74509805, a: 1}
+  m_Color: {r: 0.2509804, g: 0.2901961, b: 0.3882353, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -208,6 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7059c611e66eb449e81d39ce456fb3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skin: {fileID: 11400000, guid: c97d0e2f0783c4bd1ae5ca133ebb0c47, type: 2}
 --- !u!4 &834733443
 Transform:
   m_ObjectHideFlags: 0

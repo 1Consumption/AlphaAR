@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TestButton : MonoBehaviour
 {
-
+    public GUISkin skin;
     // Use this for initialization
     void Start()
     {
@@ -45,13 +45,14 @@ public class TestButton : MonoBehaviour
 
     private void OnGUI()
     {
+        GUI.skin = skin;
         int height = Screen.height;
         int width = Screen.width;
         int xValue = width / 4;
         int yValue = height / 9;
-        string learn = "<size=50><i>Learning Mode</i></size>";
-        string quiz = "<size=50><i>Quiz Mode</i></size>";
-        string quit = "<size=50><i>Quit</i></size>";
+        string learn = "<size=50>Learning Mode</size>";
+        string quiz = "<size=50>Quiz Mode</size>";
+        string quit = "<size=50>Quit</size>";
         if (GUI.Button(new Rect(width / 2 - xValue / 2, height / 2 - yValue / 2, xValue, yValue), learn))
         {
             SceneManager.LoadScene("theme");

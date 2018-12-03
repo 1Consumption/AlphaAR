@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -232,6 +233,14 @@ public class testmode : MonoBehaviour {
         {
             getSwapBack();
             quizGage.value = quizI + 1;
+        }
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("Intro");
+            }
         }
     }
 }
