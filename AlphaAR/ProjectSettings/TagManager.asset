@@ -10,6 +10,9 @@ TagManager:
   - Swap
   - Number
   - alphabet3D
+  - NumberSound
+  - RIGHT
+  - WRONG
   layers:
   - Default
   - TransparentFX

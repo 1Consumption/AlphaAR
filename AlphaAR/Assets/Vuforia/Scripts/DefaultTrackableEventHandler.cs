@@ -49,9 +49,25 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
-    private void Update()
+    uint exitCountValue = 0;
+    void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            exitCountValue++;
+            if (!IsInvoking("disable_DoubleClick"))
+                Invoke("disable_DoubleClick", 0.3f);
+        }
+        if (exitCountValue == 2)
+        {
+            CancelInvoke("disable_DoubleClick");
+            Application.Quit();
+        }
+    }
 
+    void disable_DoubleClick()
+    {
+        exitCountValue = 0;
     }
 
     #region PUBLIC_METHODS

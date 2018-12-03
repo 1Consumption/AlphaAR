@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class testmode : MonoBehaviour {
 
@@ -12,11 +14,12 @@ public class testmode : MonoBehaviour {
     private static int quizI=0 ;
     public Slider quizGage;
     public GameObject quizPosImg;
+    public GameObject quizResPos;
     public int[] idx;
 
     public bool isDone = false;
     public GameObject quizEndScreen;
-    public TextMesh scoreText;
+    public Text scoreText;
     int score = 0;
 
     public static string trackableMsg; //current tracked card string
@@ -28,6 +31,7 @@ public class testmode : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        quizEndScreen.SetActive(false);
         btn.onClick.AddListener(onBtn1Clicked);
 
         models = GameObject.FindGameObjectsWithTag("Animal");
@@ -52,7 +56,7 @@ public class testmode : MonoBehaviour {
         Debug.Log("*********QUIZ******");
         model.transform.parent = quizPosImg.transform;
         model.transform.localPosition = new Vector3(0, 0, 0);
-        model.transform.localRotation = Quaternion.Euler(0,180,0);
+        model.transform.localRotation = Quaternion.Euler(0,0,0);
         model.transform.localScale = new Vector3(2, 2, 2);
         model.SetActive(true);
     }
@@ -67,7 +71,7 @@ public class testmode : MonoBehaviour {
         {
             do
             {
-                randArr[i] = Random.Range(min, max);
+                randArr[i] = UnityEngine.Random.Range(min, max);
                 isDiffer = true;
                 for (int j = 0; j < i; j++)
                 {
@@ -100,12 +104,13 @@ public class testmode : MonoBehaviour {
             
             obj.transform.SetParent(cardInMiddle.transform);
             obj.transform.localPosition = new Vector3(0, 0, 0);
-            obj.transform.localRotation = Quaternion.identity;
+            obj.transform.localRotation = Quaternion.Euler(0, 90, 0);
             obj.transform.localScale = new Vector3(1, 1, 1);
             obj.SetActive(true);
 
             DefaultTrackableEventHandler.setStateLoss(false);
             anim.SetInteger("action", 1);
+            quizResPos.GetComponent<quizResult>().ShowRight();
             GameObject.Find("sndRight").GetComponent<AudioSource>().Play();
             score += 10;
             s3DModel = true;
@@ -115,8 +120,8 @@ public class testmode : MonoBehaviour {
             Debug.Log("NO :" + trackableMsg);
             s3DModel = false;
             anim.SetInteger("action", 2);
+            quizResPos.GetComponent<quizResult>().ShowWrong();
             GameObject.Find("sndWrong").GetComponent<AudioSource>().Play();
-
         }
         StartCoroutine("test");
         
@@ -128,6 +133,7 @@ public class testmode : MonoBehaviour {
         yield return new WaitForSeconds(3);
         Debug.Log("3초 지남");
 
+        quizResPos.GetComponent<quizResult>().HideResult();
         if (s3DModel)
         {
             getSwapBack();
@@ -148,7 +154,7 @@ public class testmode : MonoBehaviour {
         }
         
         quizI++;
-        if (quizI+1 < modelObj.Count)
+        if (quizI < modelObj.Count)
         {
             quizGage.value = quizI + 1;
             Quiz(modelObj.Values[idx[quizI]]);
@@ -207,14 +213,20 @@ public class testmode : MonoBehaviour {
     }
     private void OnGUI()
     {
+        String returnMenu = "<size=30>RETURN TO MENU</size>";
+        if (GUI.Button(new Rect(10, 10, 300, 80), returnMenu))
+        {
+            Application.LoadLevel("Intro");
+        }
+
         if (!isDone)
         {
-            quizEndScreen.SetActive(false); 
+            quizEndScreen.SetActive(false);
         }
         else
         {
             quizEndScreen.SetActive(true);
-            scoreText.text= "" + score ;
+            scoreText.text = "" + score;
         }
     }
 
@@ -225,6 +237,14 @@ public class testmode : MonoBehaviour {
         {
             getSwapBack();
             quizGage.value = quizI + 1;
+        }
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("Intro");
+            }
         }
     }
 }

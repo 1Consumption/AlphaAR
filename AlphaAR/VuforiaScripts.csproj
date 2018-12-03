@@ -65,9 +65,12 @@
     <Compile Include="Assets\Vuforia\Scripts\DefaultTrackableEventHandler.cs" />
     <Compile Include="Assets\Vuforia\Scripts\ImageFlag.cs" />
     <Compile Include="Assets\Vuforia\Scripts\Learn.cs" />
+    <Compile Include="Assets\Vuforia\Scripts\quizResult.cs" />
     <Compile Include="Assets\Vuforia\Scripts\Rotate.cs" />
     <Compile Include="Assets\Vuforia\Scripts\Swap.cs" />
+    <Compile Include="Assets\Vuforia\Scripts\TestButton.cs" />
     <Compile Include="Assets\Vuforia\Scripts\testmode.cs" />
+    <Compile Include="Assets\Vuforia\Scripts\ThemeScript.cs" />
     <Compile Include="Assets\Vuforia\Scripts\Visibility.cs" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
