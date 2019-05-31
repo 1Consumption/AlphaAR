@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/hansseop/.gradle/caches/transforms-1/files-1.1/VuforiaWrapper.aar/0ed533b4c57f8a56de359d25a3f02cdc/jars/libs/VuforiaUnityPlayer.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="28.0.3"
+        sha1="31de12dfd4ff409d57dd52142cd5ebe1c1eee803">
+        <dex dex="/Users/hansseop/Desktop/3학년 2학기/3학년 2학기/바탕화면 백업/무제 폴더/AlphaAR-3/Temp/gradleOut/build/intermediates/transforms/preDex/release/3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/hansseop/.gradle/caches/transforms-1/files-1.1/VuforiaWrapper.aar/0ed533b4c57f8a56de359d25a3f02cdc/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="28.0.3"
+        sha1="d46bca2836cb936675a51f8d54e3402015d835cb">
+        <dex dex="/Users/hansseop/Desktop/3학년 2학기/3학년 2학기/바탕화면 백업/무제 폴더/AlphaAR-3/Temp/gradleOut/build/intermediates/transforms/preDex/release/2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/hansseop/Desktop/3학년 2학기/3학년 2학기/바탕화면 백업/무제 폴더/AlphaAR-3/Temp/gradleOut/libs/unity-classes.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="28.0.3"
+        sha1="3040df5f5acc48a717c92a4eac99cf1b5146d7d7">
+        <dex dex="/Users/hansseop/Desktop/3학년 2학기/3학년 2학기/바탕화면 백업/무제 폴더/AlphaAR-3/Temp/gradleOut/build/intermediates/transforms/preDex/release/1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/hansseop/.gradle/caches/transforms-1/files-1.1/VuforiaWrapper.aar/0ed533b4c57f8a56de359d25a3f02cdc/jars/libs/Vuforia.jar"
+        jumboMode="false"
+        min-sdk-version="16"
+        optimize="true"
+        revision="28.0.3"
+        sha1="5d20fc1ee41915234d6e74afcaec9ba74ed63923">
+        <dex dex="/Users/hansseop/Desktop/3학년 2학기/3학년 2학기/바탕화면 백업/무제 폴더/AlphaAR-3/Temp/gradleOut/build/intermediates/transforms/preDex/release/4.jar" />
+    </item>
+
+</items>

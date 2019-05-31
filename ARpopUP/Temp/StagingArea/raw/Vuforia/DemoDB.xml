@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="E2" size="3.000000 4.006211" />
+    <ImageTarget name="Z" size="3.000000 4.010460" />
+    <ImageTarget name="Y" size="3.000000 4.033614" />
+    <ImageTarget name="X" size="3.000000 4.201271" />
+    <ImageTarget name="W" size="3.000000 4.029762" />
+    <ImageTarget name="V" size="3.000000 3.989627" />
+    <ImageTarget name="U" size="3.000000 3.890909" />
+    <ImageTarget name="T" size="3.000000 4.048729" />
+    <ImageTarget name="S" size="3.000000 3.796407" />
+    <ImageTarget name="N" size="3.000000 3.987578" />
+    <ImageTarget name="M" size="3.000000 4.248927" />
+    <ImageTarget name="L" size="3.000000 4.230444" />
+    <ImageTarget name="K" size="3.000000 4.029289" />
+    <ImageTarget name="J" size="3.000000 3.939024" />
+    <ImageTarget name="I" size="3.000000 4.045872" />
+    <ImageTarget name="H" size="3.000000 3.973333" />
+    <ImageTarget name="G" size="3.000000 3.889380" />
+    <ImageTarget name="F" size="3.000000 4.013333" />
+    <ImageTarget name="E" size="3.000000 4.040000" />
+    <ImageTarget name="R" size="3.000000 4.089686" />
+    <ImageTarget name="Q" size="3.000000 4.035398" />
+    <ImageTarget name="P" size="3.000000 3.911894" />
+    <ImageTarget name="D" size="3.000000 3.982533" />
+    <ImageTarget name="O" size="3.000000 3.950893" />
+    <ImageTarget name="C" size="5.000000 6.784141" />
+    <ImageTarget name="B" size="5.000000 6.630435" />
+    <ImageTarget name="A" size="5.000000 6.659389" />
+  </Tracking>
+</QCARConfig>

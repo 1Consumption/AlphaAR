@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{BCFCE596-E516-1463-A785-9867EAC2DE41}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Vuforia/Scripts/Learn.cs">
+    <Files>
+      <File FileName="Assets/Vuforia/Scripts/TestButton.cs" Line="1" Column="1" />
+      <File FileName="Assets/Vuforia/Scripts/ThemeScript.cs" Line="27" Column="46" />
+      <File FileName="Assets/Vuforia/Scripts/DefaultTrackableEventHandler.cs" Line="92" Column="26" />
+      <File FileName="Assets/Vuforia/Scripts/testmode.cs" Line="281" Column="10" />
+      <File FileName="Assets/Vuforia/Scripts/Learn.cs" Line="152" Column="34" />
+      <File FileName="Assets/Vuforia/Scripts/Swap.cs" Line="18" Column="10" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

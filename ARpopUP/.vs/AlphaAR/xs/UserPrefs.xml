@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{0F287366-46CE-A582-9ECC-14D53937E0C3}|">
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Vuforia/Scripts/testmode.cs">
+    <Files>
+      <File FileName="Assets/Vuforia/Scripts/TestButton.cs" Line="53" Column="47" />
+      <File FileName="Assets/Vuforia/Scripts/ThemeScript.cs" Line="75" Column="84" />
+      <File FileName="Assets/Vuforia/Scripts/Visibility.cs" Line="1" Column="1" />
+      <File FileName="Assets/Vuforia/Scripts/DefaultTrackableEventHandler.cs" Line="26" Column="56" />
+      <File FileName="Assets/Vuforia/Scripts/DefaultInitializationErrorHandler.cs" Line="166" Column="1" />
+      <File FileName="Assets/Vuforia/Scripts/Learn.cs" Line="178" Column="42" />
+      <File FileName="Assets/Vuforia/Scripts/quizResult.cs" Line="1" Column="1" />
+      <File FileName="Assets/Vuforia/Scripts/testmode.cs" Line="18" Column="22" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/hansseop/AlphaAR/AlphaAR/Assets/Vuforia/Scripts/DefaultInitializationErrorHandler.cs" relfile="Assets/Vuforia/Scripts/DefaultInitializationErrorHandler.cs" line="188" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.VuforiaEditorScripts PreferredExecutionTarget="Unity.Editor" />
+</Properties>
