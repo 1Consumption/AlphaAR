@@ -7,8 +7,6 @@ This application can create interest in infants and children by combining unique
 There are only two things to prepare.<br>
 The tablet to download the [attached alphabet card](https://github.com/HanseopShin/AlphaAR/blob/master/Alphabet%20Card.zip) and the [attached application](https://github.com/HanseopShin/AlphaAR/blob/master/ARpopUP.apk).
 
-## HOW TO INSTALL
-
 ## DEMO VIDEO
 ### Learning Mode
 [![Video Label](http://img.youtube.com/vi/9JyBH3-Lgr0/0.jpg)](https://www.youtube.com/watch?v=9JyBH3-Lgr0)
